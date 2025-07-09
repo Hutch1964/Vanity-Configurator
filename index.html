@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Custom Vanity Configurator</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 2em; max-width: 800px; margin: auto; }
+    h1 { color: #333; }
+    label { font-weight: bold; margin-top: 1em; display: block; }
+    input, select, textarea { width: 100%; padding: 0.5em; margin-top: 0.5em; }
+    .preview { margin-top: 1em; }
+    .preview img { max-width: 100%; border-radius: 10px; border: 1px solid #ccc; }
+    button { padding: 1em; margin-top: 2em; font-size: 1em; background: #222; color: white; border: none; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>🛠️ Custom Vanity Configurator</h1>
+  <form action="https://formspree.io/f/your-form-id" method="POST">
+    <label for="width">Width (mm):</label>
+    <input type="number" name="width" required />
+
+    <label for="depth">Depth (mm):</label>
+    <input type="number" name="depth" required />
+
+    <label for="height">Height (mm):</label>
+    <input type="number" name="height" required />
+
+    <label for="material">Material:</label>
+    <select name="material" onchange="updatePreview(this.value)">
+      <option value="laminate">Laminate</option>
+      <option value="polyurethane">Polyurethane</option>
+      <option value="timber">Timber Veneer</option>
+    </select>
+
+    <div class="preview">
+      <label>Material Preview:</label>
+      <img id="materialPreview" src="images/laminate.jpg" alt="Material Preview" />
+    </div>
+
+    <label><input type="checkbox" name="callback" /> Request a Callback</label>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" name="phone" />
+
+    <label for="callback_time">Preferred Callback Time:</label>
+    <input type="text" name="callback_time" placeholder="e.g. Weekdays after 3PM" />
+
+    <label for="postcode">Postcode:</label>
+    <input type="text" name="postcode" oninput="calculateFreight(this.value)" required />
+
+    <p><strong>Estimated Freight: $<span id="freightCost">0</span></strong></p>
+
+    <label for="leadsource">How did you hear about us?</label>
+    <select name="leadsource">
+      <option>Google Search</option>
+      <option>Instagram</option>
+      <option>Facebook</option>
+      <option>Referred by a friend</option>
+      <option>Interior Designer</option>
+      <option>Other</option>
+    </select>
+
+    <input type="hidden" name="_cc" value="info@customvanityco.com.au" />
+
+    <button type="submit">Submit Quote Request</button>
+  </form>
+
+  <script>
+    function updatePreview(material) {
+      const preview = document.getElementById("materialPreview");
+      preview.src = "images/" + material + ".jpg";
+    }
+
+    function calculateFreight(postcode) {
+      const freightDisplay = document.getElementById("freightCost");
+      if (!postcode || postcode.length < 4) return freightDisplay.textContent = "0";
+      const state = postcode.charAt(0);
+      let cost = 120;
+      if (state === "5") cost = 50;
+      else if (state === "3" || state === "2") cost = 70;
+      else if (state === "4") cost = 90;
+      freightDisplay.textContent = cost;
+    }
+  </script>
+</body>
+</html>
